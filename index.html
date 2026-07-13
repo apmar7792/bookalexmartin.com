@@ -42,8 +42,38 @@
       height: 4px;
       background: linear-gradient(90deg, #3b82f6, #6366f1);
       border-radius: 2px;
-      margin: 28px auto 44px;
+      margin: 28px auto 32px;
       animation: fadeDown 0.6s ease-out 0.1s both;
+    }
+
+    .duration-toggle {
+      display: flex;
+      gap: 8px;
+      background: #eef0f4;
+      padding: 6px;
+      border-radius: 12px;
+      margin: 0 auto 36px;
+      width: fit-content;
+      animation: fadeDown 0.6s ease-out 0.15s both;
+    }
+
+    .duration-toggle button {
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      color: #5a5f6e;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 26px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .duration-toggle button.active {
+      background: #fff;
+      color: #1a1a2e;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .calendar-container {
@@ -73,10 +103,13 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .calendly-inline-widget.hidden { display: none; }
+
     @media (max-width: 480px) {
       header { padding: 44px 16px 0; }
       header h1 { font-size: 30px; }
-      .divider { margin: 20px auto 28px; }
+      .divider { margin: 20px auto 24px; }
+      .duration-toggle { margin-bottom: 28px; }
       .calendly-inline-widget { height: 650px; }
     }
   </style>
@@ -88,9 +121,24 @@
 
   <div class="divider"></div>
 
+  <div class="duration-toggle" role="tablist" aria-label="Session length">
+    <button type="button" id="btn-15" class="active" onclick="showCalendar('15')">15 min</button>
+    <button type="button" id="btn-30" onclick="showCalendar('30')">30 min</button>
+  </div>
+
   <div class="calendar-container">
-    <div class="calendly-inline-widget" data-url="https://calendly.com/readysms/alex15min?hide_gdpr_banner=1&hide_event_type_details=1&background_color=ffffff&primary_color=3b82f6"></div>
+    <div id="cal-15" class="calendly-inline-widget" data-url="https://calendly.com/readysms/alex15min?hide_gdpr_banner=1&hide_event_type_details=1&background_color=ffffff&primary_color=3b82f6"></div>
+    <div id="cal-30" class="calendly-inline-widget hidden" data-url="https://calendly.com/readysms/30min-call?hide_gdpr_banner=1&hide_event_type_details=1&background_color=ffffff&primary_color=3b82f6"></div>
     <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
   </div>
+
+  <script>
+    function showCalendar(duration) {
+      document.getElementById('cal-15').classList.toggle('hidden', duration !== '15');
+      document.getElementById('cal-30').classList.toggle('hidden', duration !== '30');
+      document.getElementById('btn-15').classList.toggle('active', duration === '15');
+      document.getElementById('btn-30').classList.toggle('active', duration === '30');
+    }
+  </script>
 </body>
 </html>
